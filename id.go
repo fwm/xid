@@ -168,6 +168,15 @@ func FromString(id string) (ID, error) {
 	return *i, err
 }
 
+// MustFromString reads an ID from its string representation (panic if error)
+func MustFromString(id string) ID {
+	i := &ID{}
+	if err := i.UnmarshalText([]byte(id)); err != nil {
+		panic(err)
+	}
+	return *i
+}
+
 // String returns a base32 hex lowercased with no padding representation of the id (char set is 0-9, a-v).
 func (id ID) String() string {
 	text := make([]byte, encodedLen)
