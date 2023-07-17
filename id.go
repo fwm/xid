@@ -238,16 +238,16 @@ func encode(dst, id []byte) {
 // UnmarshalText implements encoding/text TextUnmarshaler interface
 func (id *ID) UnmarshalText(text []byte) error {
 	if len(text) != encodedLen {
-		return ErrInvalidID
+		return fmt.Errorf("%s: %w", string(text), ErrInvalidID)
 	}
 	for _, c := range text {
 		if dec[c] == 0xFF {
-			return ErrInvalidID
+			return fmt.Errorf("%s: %w", string(text), ErrInvalidID)
 		}
 	}
 	if !decode(id, text) {
 		*id = nilID
-		return ErrInvalidID
+		return fmt.Errorf("%s: %w", string(text), ErrInvalidID)
 	}
 	return nil
 }
